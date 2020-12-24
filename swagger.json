@@ -1,0 +1,933 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Meeting Scheduler",
+    "description": "Meeting Scheduler REST API",
+    "contact": {
+      "email": "rmukunda.27@gmail.com"
+    },
+    "license": {
+      "name": "MIT",
+      "url": "https://opensource.org/licenses/MIT"
+    }
+  },
+  "host": "http://todobe-env.eba-bcfh3zx8.us-east-2.elasticbeanstalk.com",
+  "basePath": "/",
+  "tags": [
+    {
+      "name": "Users",
+      "description": "API for users in the system"
+    },
+    {
+      "name": "Meetings",
+      "description": "API for meetings scheduled"
+    }
+  ],
+
+  "schemes": ["http"],
+  "consumes": ["application/json"],
+  "produces": ["application/json"],
+
+  "paths": {
+    "/api/user/create": {
+      "post": {
+        "tags": ["Users"],
+        "summary": "Create new user",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "name",
+            "description": "User Name",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "MAson MOunt"
+            }
+          },
+          {
+            "in": "body",
+            "name": "phone",
+            "description": "Phone Number of the user",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "9998877799"
+            }
+          },
+          {
+            "in": "body",
+            "name": "email",
+            "description": "Email address of the user",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "mount@gmail.com"
+            }
+          },
+          {
+            "in": "body",
+            "name": "password",
+            "description": "Password chosen by the user",
+            "required": true,
+            "schema": { "type": "string", "example": "asd!~@122" }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Successful Operation",
+
+            "schema": {
+              "title": "Sample Response",
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "User created successfully !"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "title": "Sample error response",
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/user/login": {
+      "post": {
+        "tags": ["Users"],
+        "summary": "Login user to the system",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "email",
+            "description": "Email address of the account",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "mount@gmail.com"
+            }
+          },
+          {
+            "in": "body",
+            "name": "password",
+            "description": "Password of the account",
+            "required": true,
+            "schema": { "type": "string", "example": "asd!~@122" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+
+            "schema": {
+              "title": "Sample Response",
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "example": "Mason Mount"
+                },
+                "userID": {
+                  "type": "string",
+                  "example": "5fb694c0d884419aa8c5d33a"
+                },
+                "email": {
+                  "type": "string",
+                  "example": "mount@gmail.com"
+                },
+                "token": {
+                  "type": "string",
+                  "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySUQiOiI1ZmI2OTRjMGQ4ODQ0MTlhYThs"
+                },
+                "expiresIn": {
+                  "type": "number",
+                  "example": 3000
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "title": "Sample error response",
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Incorrect Email or Password"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "title": "Sample error response",
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/user/all": {
+      "get": {
+        "tags": ["Users"],
+        "summary": "Get all users to the system",
+        "produces": ["application/json"],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+
+            "schema": {
+              "title": "Sample Response",
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "example": "Mason Mount"
+                  },
+                  "_id": {
+                    "type": "string",
+                    "example": "5fb694c0d884419aa8c5d33a"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "title": "Sample error response",
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/user/password-reset-request": {
+      "post": {
+        "tags": ["Users"],
+        "summary": "Initiate password reset request",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "email",
+            "description": "Email of the user for sending password reset link",
+            "required": true,
+            "schema": { "type": "string", "example": "mount@gmail.com" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+
+            "schema": {
+              "title": "Sample Response",
+              "type": "object",
+
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Password reset mail sent"
+                },
+                "resetEmail": {
+                  "type": "string",
+                  "example": "mount@gmail.com"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid Request Body",
+            "schema": {
+              "title": "Sample error response",
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Email is required"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "title": "Sample error response",
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "User with this email does not exist"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "title": "Sample error response",
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/user/valid-password-reset-token": {
+      "post": {
+        "tags": ["Users"],
+        "summary": "Validates the password reset token",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "token",
+            "description": "Passwordreset token sent with the password reset link",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySUQiOiI1ZmI2OTRjMGQ4ODQ0M"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+
+            "schema": {
+              "title": "Sample Response",
+              "type": "object",
+
+              "properties": {
+                "validToken": {
+                  "type": "boolean",
+                  "example": true
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid Request Body",
+            "schema": {
+              "title": "Sample error response",
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Token is required"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "title": "Sample error response",
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/user/reset-password": {
+      "post": {
+        "tags": ["Users"],
+        "summary": "Resets password for the user",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "resettoken",
+            "description": "Reset token sent with the password reset link",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySUQiOiI1ZmI2OTRjMGQ4ODQ0MTlhYThs"
+            }
+          },
+          {
+            "in": "body",
+            "name": "newPassword",
+            "description": "New Password",
+            "required": true,
+            "schema": { "type": "string", "example": "asd!~@122" }
+          },
+          {
+            "in": "body",
+            "name": "confirmedPassword",
+            "description": "Confirmed Password",
+            "required": true,
+            "schema": { "type": "string", "example": "asd!~@122" }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Successful Operation",
+
+            "schema": {
+              "title": "Sample Response",
+              "type": "object",
+              "properties": {
+                "resetSuccess": {
+                  "type": "boolean",
+                  "example": true
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid Request Body",
+            "schema": {
+              "title": "Sample error response",
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Some parameters are missing in the request body"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "title": "Sample error response",
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Account with this email does not exist"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "title": "Sample error response",
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/meeting/create": {
+      "post": {
+        "tags": ["Meetings"],
+        "summary": "Create new meeting",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "title",
+            "description": "Task Title",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "Planning Discussion"
+            }
+          },
+          {
+            "in": "body",
+            "name": "date",
+            "description": "Meeting Date",
+            "required": true,
+            "schema": {
+              "type": "date",
+              "example": "Wed Dec 23 2020 22:03:20 GMT+0530 (India Standard Time)"
+            }
+          },
+          {
+            "in": "body",
+            "name": "startTime",
+            "description": "Meeting start time",
+            "required": true,
+            "schema": {
+              "type": "date",
+              "example": "Wed Dec 23 2020 03:00:00 GMT+0530 (India Standard Time)"
+            }
+          },
+          {
+            "in": "body",
+            "name": "endTime",
+            "description": "Meeting end time",
+            "required": true,
+            "schema": {
+              "type": "date",
+              "example": "Wed Dec 23 2020 05:00:00 GMT+0530 (India Standard Time)"
+            }
+          },
+          {
+            "in": "body",
+            "name": "assignedTo",
+            "description": "Indicates to whom the meetig iss assigned",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64",
+              "example": "5fd39c9823205895382d782e"
+            }
+          },
+          {
+            "in": "body",
+            "name": "location",
+            "description": "Meeting location",
+            "required": true,
+            "schema": { "type": "string", "example": "MR-201" }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Successful Operation",
+
+            "schema": {
+              "title": "Sample Response",
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Meeting Created!!"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid Request Body",
+            "schema": {
+              "title": "Sample error response",
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Some parameters are missing in the request body"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "title": "Sample error response",
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/meeting/all-meetings": {
+      "get": {
+        "tags": ["Meetings"],
+        "summary": "Get all meetings for a given date",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "userID",
+            "description": "User ID",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64",
+              "example": "5fd39c9823205895382d782e"
+            }
+          },
+          {
+            "in": "query",
+            "name": "year",
+            "description": "Year of meeting",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "2020"
+            }
+          },
+          {
+            "in": "query",
+            "name": "month",
+            "description": "Month of meeting",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "12"
+            }
+          },
+          {
+            "in": "query",
+            "name": "date",
+            "description": "Date of meeting",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "23"
+            }
+          },
+          {
+            "in": "query",
+            "name": "offset",
+            "description": "TimeZone offset",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "+05:30"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+
+            "schema": {
+              "title": "Sample Response",
+              "type": "object",
+              "properties": {
+                "meetings": {
+                  "type": "array",
+                  "items": {
+                    "type": "object"
+                  }
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Meetings fetched!"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "title": "Sample error response",
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/meeting/all-nonadmin-users": {
+      "get": {
+        "tags": ["Meetings"],
+        "summary": "Get all non admin users",
+        "produces": ["application/json"],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+
+            "schema": {
+              "title": "Sample Response",
+              "type": "object",
+              "properties": {
+                "users": {
+                  "type": "array",
+                  "items": {
+                    "type": "object"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "title": "Sample error response",
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/meeting/:id": {
+      "put": {
+        "tags": ["Meetings"],
+        "summary": "Update the details of a meeting",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "title",
+            "description": "Task Title",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "Planning Discussion"
+            }
+          },
+          {
+            "in": "body",
+            "name": "date",
+            "description": "Meeting Date",
+            "required": true,
+            "schema": {
+              "type": "date",
+              "example": "Wed Dec 23 2020 22:03:20 GMT+0530 (India Standard Time)"
+            }
+          },
+          {
+            "in": "body",
+            "name": "startTime",
+            "description": "Meeting start time",
+            "required": true,
+            "schema": {
+              "type": "date",
+              "example": "Wed Dec 23 2020 03:00:00 GMT+0530 (India Standard Time)"
+            }
+          },
+          {
+            "in": "body",
+            "name": "endTime",
+            "description": "Meeting end time",
+            "required": true,
+            "schema": {
+              "type": "date",
+              "example": "Wed Dec 23 2020 05:00:00 GMT+0530 (India Standard Time)"
+            }
+          },
+          {
+            "in": "body",
+            "name": "location",
+            "description": "Meeting location",
+            "required": true,
+            "schema": { "type": "string", "example": "MR-201" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+
+            "schema": {
+              "title": "Sample Response",
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Meetings details change successful!"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid Request Body",
+            "schema": {
+              "title": "Sample error response",
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Some parameters are missing in the request"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorised",
+            "schema": {
+              "title": "Sample error response",
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "User is not authorized to edit meeting"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "title": "Sample error response",
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/meeting/:taskid": {
+      "delete": {
+        "tags": ["Meetings"],
+        "summary": "Delete meeting",
+        "produces": ["application/json"],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+
+            "schema": {
+              "title": "Sample Response",
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Deletion successful!"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorised",
+            "schema": {
+              "title": "Sample error response",
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "User is not authorized to delete meeting"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "title": "Sample error response",
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "User": {
+      "title": "User",
+      "type": "object",
+      "required": ["name", "phone", "email", "password", "admon"],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "phone": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string",
+          "uniqueItems": true
+        },
+        "password": {
+          "type": "string"
+        },
+        "admin": {
+          "type": "boolean"
+        }
+      }
+    },
+    "Meeting": {
+      "title": "Meeting",
+      "type": "object",
+      "required": [
+        "title",
+        "date",
+        "startTime",
+        "endTime",
+        "location",
+        "assignedTo",
+        "creator"
+      ],
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "date": {
+          "type": "date"
+        },
+        "startTime": {
+          "type": "date"
+        },
+        "endTime": {
+          "type": "date"
+        },
+        "location": {
+          "type": "string"
+        },
+        "assignedTo": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "creator": {
+          "type": "integer",
+          "format": "int64"
+        }
+      }
+    }
+  },
+  "components": {
+    "parameters": {}
+  }
+}
